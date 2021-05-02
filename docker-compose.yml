@@ -1,0 +1,44 @@
+version: '3'
+
+volumes:
+  db-data:
+
+services:
+  postgres:
+    image: "postgres:alpine"
+    volumes:
+      - db-data:/pgdata
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: blogapi
+      POSTGRES_DB: blogapi
+      POSTGRES_USER: blogapi
+      PGDATA: /pgdata
+
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    depends_on:
+      - postgres
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_DEBUG: 'true'
+      DJANGO_ALLOWED_HOSTS: '*'
+
+      DB_NAME: blogapi
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: blogapi
+      DB_PASSWORD: blogapi
+
+      STAGE: local
+
+    # Make interactive
+    stdin_open: true
+    tty: true
+    command: ["runserver", "0.0.0.0:8000"]
