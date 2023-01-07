@@ -8,15 +8,16 @@ Autenticação customizada via JWT.
 
 Testes de API utilizando APITestCase do DRF.
 
+Integração com prometheus utilizando a lib django-prometheus
 
 ### Instruções para uso via Docker:
 
 ```
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
 ```
-docker-compose exec app python manage.py migrate
+docker compose exec app python manage.py migrate
 ```
 
 A aplicação ficará disponível localmente na porta 8000.
